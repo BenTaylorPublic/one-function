@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* Border box is best box */
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #333333;
+}
+
+table {
+    width: 800px;
+    height: 450px;
+    border-spacing: 0px;
+    position: absoulute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 10px;
+}
+
+tr {
+    width: 800px;
+    height: 5px;
+}
+
+td {
+    width: 5px;
+    height: 5px;
+    background-color: white;
+}
