@@ -56,11 +56,13 @@ async function OneFunction(param) {
         return;
     } else if (callType === 0) {
         var gameState = {
-            x: 80,
-            y: 45
+            headX: 80,
+            headY: 45,
+            facing: 0,
+            gameOver: false
         };
 
-        while (true) { //TODO: Break on escape
+        while (!gameState.gameOver) { //TODO: Break on escape
             OneFunction({
                 callType: 1,
                 gameState: gameState
@@ -68,37 +70,55 @@ async function OneFunction(param) {
             // Sleep 10ms, otherwise UI DIES
             await new Promise(resolve => setTimeout(resolve, 10));
         }
+        console.log("GAME OVER");
         return;
     } else if (callType === 1) {
-        var somethingChanged = false;
         if (window.keyLeft) {
             window.keyLeft = false;
-            param.gameState.x--;
-            somethingChanged = true;
-        }
-        if (window.keyRight) {
-            window.keyRight = false;
-            param.gameState.x++;
-            somethingChanged = true;
+            if (param.gameState.facing != 2) {
+                param.gameState.facing = 0;
+            }
         }
         if (window.keyUp) {
             window.keyUp = false;
-            param.gameState.y--;
-            somethingChanged = true;
+            if (param.gameState.facing != 3) {
+                param.gameState.facing = 1;
+            }
+        }
+        if (window.keyRight) {
+            window.keyRight = false;
+            if (param.gameState.facing != 0) {
+                param.gameState.facing = 2;
+            }
         }
         if (window.keyDown) {
             window.keyDown = false;
-            param.gameState.y++;
-            somethingChanged = true;
-        }
-        if (somethingChanged) {
-            try {
-                var newCell = document.getElementById("cell-" + param.gameState.x + "-" + param.gameState.y);
-                newCell.className = "blackCell";
-            } catch(ex) {
-                console.log("Issue with drawing the head");
-                console.log(param.gameState);
+            if (param.gameState.facing != 1) {
+                param.gameState.facing = 3;
             }
+        }
+
+        if (param.gameState.facing === 0) {
+            // Left
+            param.gameState.headX--;
+        } else if (param.gameState.facing === 1) {
+            // Up
+            param.gameState.headY--;
+        } else if (param.gameState.facing === 2) {
+            // Right
+            param.gameState.headX++;
+        } else if (param.gameState.facing === 3) {
+            // Down
+            param.gameState.headY++;
+        }
+
+        try {
+            var newCell = document.getElementById("cell-" + param.gameState.headX + "-" + param.gameState.headY);
+            newCell.className = "blackCell";
+        } catch (ex) {
+            console.log("Issue with drawing the head");
+            console.log(param.gameState);
+            param.gameState.gameOver = true;
         }
         return;
     }
