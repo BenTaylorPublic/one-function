@@ -5,9 +5,8 @@
 // Called initially from the body onload event
 // Every resulting call is done internally via RECURSION
 async function OneFunction(param) {
-    // console.log(param);
-    // console.log(typeof param);
     if (param == null) {
+        console.info("Generating the board");
         /*
          * When the param is null, it's the initial setup of the game board
          * After, we start the main game loop 
@@ -32,6 +31,7 @@ async function OneFunction(param) {
             OneFunction(event);
         });
 
+        console.info("Finished generating the board");
         OneFunction({
             callType: 0
         });
@@ -55,6 +55,7 @@ async function OneFunction(param) {
         // TODO: Escape key
         return;
     } else if (callType === 0) {
+        console.info("Begining the main game loop");
         var gameState = {
             headX: 80,
             headY: 45,
@@ -70,7 +71,7 @@ async function OneFunction(param) {
             // Sleep 10ms, otherwise UI DIES
             await new Promise(resolve => setTimeout(resolve, 10));
         }
-        console.log("GAME OVER");
+        console.info("GAME OVER - Main game loop over, refresh to replay");
         return;
     } else if (callType === 1) {
         if (window.keyLeft) {
@@ -116,8 +117,8 @@ async function OneFunction(param) {
             var newCell = document.getElementById("cell-" + param.gameState.headX + "-" + param.gameState.headY);
             newCell.className = "blackCell";
         } catch (ex) {
-            console.log("Issue with drawing the head");
-            console.log(param.gameState);
+            console.info("Issue with drawing the head");
+            console.info(param.gameState);
             param.gameState.gameOver = true;
         }
         return;
