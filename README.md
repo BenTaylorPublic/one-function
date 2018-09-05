@@ -5,7 +5,7 @@ OneFunction isn't just a program, it's a programming **philosophy**. Too long ha
 
 As the name implies, all programs should be written with a single function, and recursion should be used to extend the programs functionality.
 
-/s
+TODO: Somehow incorporate block chain into the recursive function to speed up processing...
 
 Go to https://bentaylorpublic.github.io/one-function/ for a demo
 
