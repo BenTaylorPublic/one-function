@@ -61,6 +61,8 @@ async function OneFunction(param) {
             headY: 45,
             facing: 0,
             gameOver: false,
+            berryX: 25,
+            berryY: 25,
             tail: [
                 {
                     x: 81,
@@ -86,6 +88,7 @@ async function OneFunction(param) {
         for (let i = 0; i < gameState.tail.length; i++) {
             document.getElementById("cell-" + gameState.tail[i].x + "-" + gameState.tail[i].y).className = "blackCell";
         }
+        document.getElementById("cell-" + gameState.berryX + "-" + gameState.berryY).className = "magentaCell";
 
 
         while (!gameState.gameOver) { //TODO: Break on escape
@@ -94,7 +97,7 @@ async function OneFunction(param) {
                 gameState: gameState
             });
             // Sleep 10ms, otherwise UI DIES
-            await new Promise(resolve => setTimeout(resolve, 10));
+            await new Promise(resolve => setTimeout(resolve, 30));
         }
         console.info("GAME OVER - Main game loop over, refresh to replay");
         return;
@@ -158,16 +161,48 @@ async function OneFunction(param) {
             return;
         }
 
-        // Undrawing the last tail
-        try {
-            document.getElementById("cell-" + param.gameState.tail[param.gameState.tail.length - 1].x + "-" + param.gameState.tail[param.gameState.tail.length - 1].y).className = "";
-        } catch (ex) {
-            console.error("Issue with drawing the head");
-            console.error(param.gameState);
-        }
 
-        // Removing the last tail from the array
-        param.gameState.tail.pop();
+        // Berry collection
+        if (param.gameState.headX === param.gameState.berryX && param.gameState.headY === param.gameState.berryY) {
+            // Berry has been collected
+            var randomNumberVariables1 = {
+                randomNumber: 0,
+                randomNumberMin: 0,
+                randomNumberMax: 160 - 1
+            };
+            OneFunction({
+                callType: 2,
+                randomNumberVariables: randomNumberVariables1
+            });
+            var newXLocation = randomNumberVariables1.randomNumber;
+
+            var randomNumberVariables2 = {
+                randomNumber: 0,
+                randomNumberMin: 0,
+                randomNumberMax: 90 - 1
+            };
+            OneFunction({
+                callType: 2,
+                randomNumberVariables: randomNumberVariables2
+            });
+            var newYLocation = randomNumberVariables2.randomNumber;
+
+            param.gameState.berryX = newXLocation;
+            param.gameState.berryY = newYLocation;
+            // Redrawing the berry 
+            document.getElementById("cell-" + param.gameState.berryX + "-" + param.gameState.berryY).className = "magentaCell";
+
+        } else { //Only undraw and remove the tail if no berry was collected
+            // Undrawing the last tail
+            try {
+                document.getElementById("cell-" + param.gameState.tail[param.gameState.tail.length - 1].x + "-" + param.gameState.tail[param.gameState.tail.length - 1].y).className = "";
+            } catch (ex) {
+                console.error("Issue with drawing the head");
+                console.error(param.gameState);
+            }
+            // Removing the last tail from the array
+            param.gameState.tail.pop();
+        }
 
         // Drawing head
         try {
@@ -176,6 +211,10 @@ async function OneFunction(param) {
             console.error("Issue with drawing the head");
             console.error(param.gameState);
         }
+        return;
+    } else if (callType === 2) {
+        // Random number
+        param.randomNumberVariables.randomNumber = Math.floor(Math.random() * (param.randomNumberVariables.randomNumberMax - param.randomNumberVariables.randomNumberMin + 1)) + param.randomNumberVariables.randomNumberMin;
         return;
     }
 
