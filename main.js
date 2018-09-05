@@ -79,20 +79,17 @@ async function OneFunction(param) {
             if (param.gameState.facing != 2) {
                 param.gameState.facing = 0;
             }
-        }
-        if (window.keyUp) {
+        } else if (window.keyUp) {
             window.keyUp = false;
             if (param.gameState.facing != 3) {
                 param.gameState.facing = 1;
             }
-        }
-        if (window.keyRight) {
+        } else if (window.keyRight) {
             window.keyRight = false;
             if (param.gameState.facing != 0) {
                 param.gameState.facing = 2;
             }
-        }
-        if (window.keyDown) {
+        } else if (window.keyDown) {
             window.keyDown = false;
             if (param.gameState.facing != 1) {
                 param.gameState.facing = 3;
