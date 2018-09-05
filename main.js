@@ -60,8 +60,33 @@ async function OneFunction(param) {
             headX: 80,
             headY: 45,
             facing: 0,
-            gameOver: false
+            gameOver: false,
+            tail: [
+                {
+                    x: 81,
+                    y: 45
+                },
+                {
+                    x: 82,
+                    y: 45
+                },
+                {
+                    x: 83,
+                    y: 45
+                },
+                {
+                    x: 84,
+                    y: 45
+                }
+            ]
         };
+
+        // Initial draw
+        document.getElementById("cell-" + gameState.headX + "-" + gameState.headY).className = "blackCell";
+        for (let i = 0; i < gameState.tail.length; i++) {
+            document.getElementById("cell-" + gameState.tail[i].x + "-" + gameState.tail[i].y).className = "blackCell";
+        }
+
 
         while (!gameState.gameOver) { //TODO: Break on escape
             OneFunction({
@@ -74,6 +99,9 @@ async function OneFunction(param) {
         console.info("GAME OVER - Main game loop over, refresh to replay");
         return;
     } else if (callType === 1) {
+        // Single game loop function
+
+        // Determining which way the snake is now facing
         if (window.keyLeft) {
             window.keyLeft = false;
             if (param.gameState.facing != 2) {
@@ -96,6 +124,13 @@ async function OneFunction(param) {
             }
         }
 
+        // Adding the old head to the tail
+        param.gameState.tail.unshift({
+            x: param.gameState.headX,
+            y: param.gameState.headY
+        });
+
+        // Updating the headX and headY
         if (param.gameState.facing === 0) {
             // Left
             param.gameState.headX--;
@@ -110,13 +145,36 @@ async function OneFunction(param) {
             param.gameState.headY++;
         }
 
-        try {
-            var newCell = document.getElementById("cell-" + param.gameState.headX + "-" + param.gameState.headY);
-            newCell.className = "blackCell";
-        } catch (ex) {
-            console.info("Issue with drawing the head");
-            console.info(param.gameState);
+        // Collision detection
+        if (param.gameState.headX < 0 || param.gameState.headX >= 160) {
+            // Hit the left or right wall
+            console.info("You hit a wall");
             param.gameState.gameOver = true;
+            return;
+        } else if (param.gameState.headY < 0 || param.gameState.headY >= 90) {
+            // Hit the top or bottom
+            console.info("You hit a wall");
+            param.gameState.gameOver = true;
+            return;
+        }
+
+        // Undrawing the last tail
+        try {
+            document.getElementById("cell-" + param.gameState.tail[param.gameState.tail.length - 1].x + "-" + param.gameState.tail[param.gameState.tail.length - 1].y).className = "";
+        } catch (ex) {
+            console.error("Issue with drawing the head");
+            console.error(param.gameState);
+        }
+
+        // Removing the last tail from the array
+        param.gameState.tail.pop();
+
+        // Drawing head
+        try {
+            document.getElementById("cell-" + param.gameState.headX + "-" + param.gameState.headY).className = "blackCell";
+        } catch (ex) {
+            console.error("Issue with drawing the head");
+            console.error(param.gameState);
         }
         return;
     }
