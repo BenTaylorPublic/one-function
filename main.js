@@ -1,7 +1,3 @@
-/**
- * Times I've broke my browser with an infite loop: 3
- */
-
 // Called initially from the body onload event
 // Every resulting call is done internally via RECURSION
 async function OneFunction(param) {
