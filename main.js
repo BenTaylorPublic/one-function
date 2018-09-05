@@ -5,8 +5,8 @@
 // Called initially from the body onload event
 // Every resulting call is done internally via RECURSION
 async function OneFunction(param) {
-    console.log(param);
-    console.log(typeof param);
+    // console.log(param);
+    // console.log(typeof param);
     if (param == null) {
         /*
          * When the param is null, it's the initial setup of the game board
@@ -55,44 +55,51 @@ async function OneFunction(param) {
         // TODO: Escape key
         return;
     } else if (callType === 0) {
-        var currentLocation = {
+        var gameState = {
             x: 80,
             y: 45
         };
 
         while (true) { //TODO: Break on escape
-            var somethingChanged = false;
-            if (window.keyLeft) {
-                window.keyLeft = false;
-                currentLocation.x--;
-                somethingChanged = true;
-            }
-            if (window.keyRight) {
-                window.keyRight = false;
-                currentLocation.x++;
-                somethingChanged = true;
-            }
-            if (window.keyUp) {
-                window.keyUp = false;
-                currentLocation.y--;
-                somethingChanged = true;
-            }
-            if (window.keyDown) {
-                window.keyDown = false;
-                currentLocation.y++;
-                somethingChanged = true;
-            }
-            if (somethingChanged) {
-                var newCell = document.getElementById("cell-" + currentLocation.x + "-" + currentLocation.y);
-                newCell.className = "blackCell";
-                console.log("SET");
-            }
+            OneFunction({
+                callType: 1,
+                gameState: gameState
+            });
             // Sleep 10ms, otherwise UI DIES
             await new Promise(resolve => setTimeout(resolve, 10));
         }
         return;
     } else if (callType === 1) {
-        // TODO: Single game loop logic
+        var somethingChanged = false;
+        if (window.keyLeft) {
+            window.keyLeft = false;
+            param.gameState.x--;
+            somethingChanged = true;
+        }
+        if (window.keyRight) {
+            window.keyRight = false;
+            param.gameState.x++;
+            somethingChanged = true;
+        }
+        if (window.keyUp) {
+            window.keyUp = false;
+            param.gameState.y--;
+            somethingChanged = true;
+        }
+        if (window.keyDown) {
+            window.keyDown = false;
+            param.gameState.y++;
+            somethingChanged = true;
+        }
+        if (somethingChanged) {
+            try {
+                var newCell = document.getElementById("cell-" + param.gameState.x + "-" + param.gameState.y);
+                newCell.className = "blackCell";
+            } catch(ex) {
+                console.log("Issue with drawing the head");
+                console.log(param.gameState);
+            }
+        }
         return;
     }
 
