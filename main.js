@@ -52,7 +52,6 @@ async function OneFunction(param) {
         } else if (param.keyCode === 40) {
             window.keyDown = true;
         }
-        // TODO: Escape key
         return;
     } else if (callType === 0) {
         console.info("Begining the main game loop");
@@ -63,25 +62,16 @@ async function OneFunction(param) {
             gameOver: false,
             berryX: 25,
             berryY: 25,
-            tail: [
-                {
-                    x: 81,
-                    y: 45
-                },
-                {
-                    x: 82,
-                    y: 45
-                },
-                {
-                    x: 83,
-                    y: 45
-                },
-                {
-                    x: 84,
-                    y: 45
-                }
-            ]
+            tail: []
         };
+
+        // Populating the tail, change how long it is initially here
+        for (let i = 0; i < 4; i++) {
+            gameState.tail.push({
+                x: gameState.headX + i,
+                y: gameState.headY
+            });
+        }
 
         // Initial draw
         document.getElementById("cell-" + gameState.headX + "-" + gameState.headY).className = "blackCell";
@@ -90,8 +80,7 @@ async function OneFunction(param) {
         }
         document.getElementById("cell-" + gameState.berryX + "-" + gameState.berryY).className = "magentaCell";
 
-
-        while (!gameState.gameOver) { //TODO: Break on escape
+        while (!gameState.gameOver) {
             OneFunction({
                 callType: 1,
                 gameState: gameState
@@ -148,7 +137,7 @@ async function OneFunction(param) {
             param.gameState.headY++;
         }
 
-        // Collision detection
+        // Collision detection - Wall
         if (param.gameState.headX < 0 || param.gameState.headX >= 160) {
             // Hit the left or right wall
             console.info("You hit a wall");
@@ -161,6 +150,15 @@ async function OneFunction(param) {
             return;
         }
 
+        // Collision detection - tail
+        for (let i = 0; i < param.gameState.tail.length; i++) {
+            const tailCell = param.gameState.tail[i];
+            if (param.gameState.headX === tailCell.x && param.gameState.headY === tailCell.y) {
+                console.info("You hit your tail");
+                param.gameState.gameOver = true;
+                return
+            }
+        }
 
         // Berry collection
         if (param.gameState.headX === param.gameState.berryX && param.gameState.headY === param.gameState.berryY) {
