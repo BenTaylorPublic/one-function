@@ -30,3 +30,7 @@ td {
     height: 5px;
     background-color: white;
 }
+
+.blackCell {
+    background-color: black;
+}
