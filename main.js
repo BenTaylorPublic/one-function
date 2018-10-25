@@ -226,9 +226,15 @@ async function OneFunction(param) {
         param.randomNumberVariables.randomNumber = Math.floor(Math.random() * (param.randomNumberVariables.randomNumberMax - param.randomNumberVariables.randomNumberMin + 1)) + param.randomNumberVariables.randomNumberMin;
         return;
     } else if (callType === 3) {
+        if (param.gameState.score === 0) {
+            // Let people know they're terrible
+            alert("You didn't get any berries. Did you even try?");
+            location.reload();
+            return;
+        }
+
         // Game over screen and restart
         var firstMessageHalf = "Game over! You ate " + param.gameState.score;
-
         var berryPlural = (param.gameState.score != 1) ? " berries" : " berry";
 
         alert(firstMessageHalf + berryPlural);
