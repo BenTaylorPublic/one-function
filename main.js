@@ -55,6 +55,7 @@ async function OneFunction(param) {
             headX: 80,
             headY: 45,
             facing: 0,
+            score: 0,
             gameOver: false,
             berryX: 25,
             berryY: 25,
@@ -138,12 +139,20 @@ async function OneFunction(param) {
             // Hit the left or right wall
             console.info("You hit a wall");
             param.gameState.gameOver = true;
-            return;
+            // Call Gameover
+            OneFunction({
+                callType: 3,
+                gameState: param.gameState
+            });
         } else if (param.gameState.headY < 0 || param.gameState.headY >= 90) {
             // Hit the top or bottom
             console.info("You hit a wall");
             param.gameState.gameOver = true;
-            return;
+            // Call Gameover
+            OneFunction({
+                callType: 3,
+                gameState: param.gameState
+            });
         }
 
         // Collision detection - tail
@@ -152,12 +161,18 @@ async function OneFunction(param) {
             if (param.gameState.headX === tailCell.x && param.gameState.headY === tailCell.y) {
                 console.info("You hit your tail");
                 param.gameState.gameOver = true;
-                return
+                // Call Gameover
+                OneFunction({
+                    callType: 3,
+                    gameState: param.gameState
+                });
             }
         }
 
         // Berry collection
         if (param.gameState.headX === param.gameState.berryX && param.gameState.headY === param.gameState.berryY) {
+            // Add to score
+            param.gameState.score++;
             // Berry has been collected
             var randomNumberVariables1 = {
                 randomNumber: 0,
@@ -209,6 +224,15 @@ async function OneFunction(param) {
     } else if (callType === 2) {
         // Random number
         param.randomNumberVariables.randomNumber = Math.floor(Math.random() * (param.randomNumberVariables.randomNumberMax - param.randomNumberVariables.randomNumberMin + 1)) + param.randomNumberVariables.randomNumberMin;
+        return;
+    } else if (callType === 3) {
+        // Game over screen and restart
+        var firstMessageHalf = "Game over! You ate " + param.gameState.score;
+
+        var berryPlural = (param.gameState.score != 1) ? " berries" : " berry";
+
+        alert(firstMessageHalf + berryPlural);
+        location.reload();
         return;
     }
 
