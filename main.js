@@ -211,7 +211,7 @@ async function OneFunction(param) {
             try {
                 document.getElementById("cell-" + param.gameState.tail[param.gameState.tail.length - 1].x + "-" + param.gameState.tail[param.gameState.tail.length - 1].y).className = "";
             } catch (ex) {
-                console.error("Issue with drawing the head");
+                console.error("Issue with clearing the tail");
                 console.error(param.gameState);
             }
             // Removing the last tail from the array
