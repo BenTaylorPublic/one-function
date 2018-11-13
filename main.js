@@ -85,7 +85,10 @@ async function OneFunction(param) {
             // Sleep 10ms, otherwise UI DIES
             await new Promise(resolve => setTimeout(resolve, 30));
         }
-        console.info("GAME OVER - Main game loop over, refresh to replay");
+        // Restart the game
+        OneFunction({
+            callType: 0
+        });
         return;
     } else if (callType === 1) {
         // Single game loop function
@@ -144,6 +147,7 @@ async function OneFunction(param) {
                 callType: 3,
                 gameState: param.gameState
             });
+            return;
         } else if (param.gameState.headY < 0 || param.gameState.headY >= 90) {
             // Hit the top or bottom
             console.info("You hit a wall");
@@ -153,6 +157,7 @@ async function OneFunction(param) {
                 callType: 3,
                 gameState: param.gameState
             });
+            return;
         }
 
         // Collision detection - tail
@@ -229,7 +234,6 @@ async function OneFunction(param) {
         if (param.gameState.score === 0) {
             // Let people know they're terrible
             alert("You didn't get any berries. Did you even try?");
-            location.reload();
             return;
         }
 
@@ -238,7 +242,6 @@ async function OneFunction(param) {
         var berryPlural = (param.gameState.score != 1) ? " berries" : " berry";
 
         alert(firstMessageHalf + berryPlural);
-        location.reload();
         return;
     }
 
