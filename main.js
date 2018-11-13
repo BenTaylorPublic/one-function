@@ -85,6 +85,11 @@ async function OneFunction(param) {
             // Sleep 10ms, otherwise UI DIES
             await new Promise(resolve => setTimeout(resolve, 30));
         }
+        // Remove the body and berry from board
+        OneFunction({
+            callType: 4,
+            gameState: gameState
+        });
         // Restart the game
         OneFunction({
             callType: 0
@@ -243,6 +248,26 @@ async function OneFunction(param) {
         var berryPlural = (param.gameState.score != 1) ? " berries" : " berry";
 
         alert(firstMessageHalf + berryPlural);
+        return;
+    } else if (callType === 4) {
+        // Using the game state to remove the body and berry
+
+        for (let i = 0; i < param.gameState.tail.length; i++) {
+            try {
+                document.getElementById("cell-" + param.gameState.tail[i].x + "-" + param.gameState.tail[i].y).className = "";
+            } catch (ex) {
+                console.error("Issue with clearing the game board upon death (tail)");
+                console.error(param.gameState);
+            }
+        }
+
+        try {
+            document.getElementById("cell-" + param.gameState.berryX + "-" + param.gameState.berryY).className = "";
+        } catch (ex) {
+            console.error("Issue with clearing the game board upon death (berry)");
+            console.error(param.gameState);
+        }
+
         return;
     }
 
