@@ -1,6 +1,8 @@
 // Called initially from the body onload event
 // Every resulting call is done internally via RECURSION
 async function OneFunction(param) {
+    const yLimit = 45;
+    const xLimit = 80;
     if (param == null) {
         console.info("Generating the board");
         /*
@@ -10,10 +12,9 @@ async function OneFunction(param) {
         var body = document.getElementsByTagName("body")[0];
         var table = document.createElement("table");
 
-        // Game board will by 160:90 for now
-        for (let y = 0; y < 90; y++) { //For each row
+        for (let y = 0; y < yLimit; y++) { //For each row
             var tableRow = document.createElement("tr");
-            for (let x = 0; x < 160; x++) { //For each column
+            for (let x = 0; x < xLimit; x++) { //For each column
                 var tableCell = document.createElement("td");
                 tableCell.id = "cell-" + x.toString() + "-" + y.toString();
                 tableRow.appendChild(tableCell);
@@ -52,8 +53,8 @@ async function OneFunction(param) {
     } else if (callType === 0) {
         console.info("Begining the main game loop");
         var gameState = {
-            headX: 80,
-            headY: 45,
+            headX: Math.round(xLimit / 2),
+            headY: Math.round(yLimit / 2),
             facing: 0,
             score: 0,
             gameOver: false,
@@ -143,7 +144,7 @@ async function OneFunction(param) {
         }
 
         // Collision detection - Wall
-        if (param.gameState.headX < 0 || param.gameState.headX >= 160) {
+        if (param.gameState.headX < 0 || param.gameState.headX >= xLimit) {
             // Hit the left or right wall
             console.info("You hit a wall");
             param.gameState.gameOver = true;
@@ -153,7 +154,7 @@ async function OneFunction(param) {
                 gameState: param.gameState
             });
             return;
-        } else if (param.gameState.headY < 0 || param.gameState.headY >= 90) {
+        } else if (param.gameState.headY < 0 || param.gameState.headY >= yLimit) {
             // Hit the top or bottom
             console.info("You hit a wall");
             param.gameState.gameOver = true;
@@ -187,7 +188,7 @@ async function OneFunction(param) {
             var randomNumberVariables1 = {
                 randomNumber: 0,
                 randomNumberMin: 0,
-                randomNumberMax: 160 - 1
+                randomNumberMax: xLimit - 1
             };
             OneFunction({
                 callType: 2,
@@ -198,7 +199,7 @@ async function OneFunction(param) {
             var randomNumberVariables2 = {
                 randomNumber: 0,
                 randomNumberMin: 0,
-                randomNumberMax: 90 - 1
+                randomNumberMax: yLimit - 1
             };
             OneFunction({
                 callType: 2,
