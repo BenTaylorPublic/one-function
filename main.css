@@ -28,7 +28,7 @@ tr {
 td {
     width: 5px;
     height: 5px;
-    background-color: white;
+    background-color: lightgrey;
 }
 
 .blackCell {
@@ -37,4 +37,17 @@ td {
 
 .magentaCell {
     background-color: magenta;
+}
+
+#popup {
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 225px;
+    right: 0;
+    left: 0;
+    margin: auto;
+    color: white;
+    text-align: center;
+    line-height: 40px;
 }

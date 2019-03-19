@@ -23,6 +23,11 @@ async function OneFunction(param) {
         }
         body.appendChild(table);
 
+        var popupDiv = document.createElement("div");
+        popupDiv.id = "popup";
+        popupDiv.hidden = true;
+        body.appendChild(popupDiv);
+
         // Attaching the keydown events to the window
         window.addEventListener("keydown", (event) => {
             OneFunction(event);
@@ -49,6 +54,7 @@ async function OneFunction(param) {
         } else if (param.keyCode === 40) {
             window.keyDown = true;
         }
+        window.restartGame = true;
         return;
     } else if (callType === 0) {
         console.info("Begining the main game loop");
@@ -60,7 +66,8 @@ async function OneFunction(param) {
             gameOver: false,
             berryX: 25,
             berryY: 25,
-            tail: []
+            tail: [],
+            result: ""
         };
 
         // Populating the tail, change how long it is initially here
@@ -86,6 +93,12 @@ async function OneFunction(param) {
             // Sleep 10ms, otherwise UI DIES
             await new Promise(resolve => setTimeout(resolve, 30));
         }
+
+        await OneFunction({
+            callType: 5,
+            gameState: gameState
+        });
+
         // Remove the body and berry from board
         OneFunction({
             callType: 4,
@@ -240,7 +253,7 @@ async function OneFunction(param) {
         // Game over score alert
         if (param.gameState.score === 0) {
             // Let people know they're terrible
-            alert("You didn't get any berries. Did you even try?");
+            param.gameState.result = "You didn't get any berries. Did you even try?";
             return;
         }
 
@@ -248,7 +261,7 @@ async function OneFunction(param) {
         var firstMessageHalf = "Game over! You ate " + param.gameState.score;
         var berryPlural = (param.gameState.score != 1) ? " berries" : " berry";
 
-        alert(firstMessageHalf + berryPlural);
+        param.gameState.result = firstMessageHalf + berryPlural;
         return;
     } else if (callType === 4) {
         // Using the game state to remove the body and berry
@@ -269,6 +282,19 @@ async function OneFunction(param) {
             console.error(param.gameState);
         }
 
+        return;
+    } else if (callType === 5) {
+        window.restartGame = false;
+        var popupDiv = document.getElementById("popup");
+        popupDiv.innerHTML = param.gameState.result + "<br/>(Press any key to restart)";
+        popupDiv.hidden = false;
+        await new Promise(resolve => setTimeout(resolve, 300));
+        do {
+            //Block
+            await new Promise(resolve => setTimeout(resolve, 30));
+        } while (window.restartGame === false);
+
+        popupDiv.hidden = true;
         return;
     }
 
