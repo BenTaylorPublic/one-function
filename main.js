@@ -99,8 +99,13 @@ async function OneFunction(param) {
                 callType: 1,
                 gameState: gameState
             });
-            // Sleep 10ms, otherwise UI DIES
-            await new Promise(resolve => setTimeout(resolve, 30));
+
+            //Game gets faster as the game progresses
+            var sleepTime = 30 - gameState.score;
+            if (sleepTime === 0) {
+                sleepTime = 1;
+            }
+            await new Promise(resolve => setTimeout(resolve, sleepTime));
         }
 
         //Storing/checking score
