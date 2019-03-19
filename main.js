@@ -227,23 +227,13 @@ async function OneFunction(param) {
 
         } else { //Only undraw and remove the tail if no berry was collected
             // Undrawing the last tail
-            try {
-                document.getElementById("cell-" + param.gameState.tail[param.gameState.tail.length - 1].x + "-" + param.gameState.tail[param.gameState.tail.length - 1].y).className = "";
-            } catch (ex) {
-                console.error("Issue with clearing the tail");
-                console.error(param.gameState);
-            }
+            document.getElementById("cell-" + param.gameState.tail[param.gameState.tail.length - 1].x + "-" + param.gameState.tail[param.gameState.tail.length - 1].y).className = "";
             // Removing the last tail from the array
             param.gameState.tail.pop();
         }
 
         // Drawing head
-        try {
-            document.getElementById("cell-" + param.gameState.headX + "-" + param.gameState.headY).className = "blackCell";
-        } catch (ex) {
-            console.error("Issue with drawing the head");
-            console.error(param.gameState);
-        }
+        document.getElementById("cell-" + param.gameState.headX + "-" + param.gameState.headY).className = "blackCell";
         return;
     } else if (callType === 2) {
         // Random number
@@ -267,21 +257,9 @@ async function OneFunction(param) {
         // Using the game state to remove the body and berry
 
         for (let i = 0; i < param.gameState.tail.length; i++) {
-            try {
-                document.getElementById("cell-" + param.gameState.tail[i].x + "-" + param.gameState.tail[i].y).className = "";
-            } catch (ex) {
-                console.error("Issue with clearing the game board upon death (tail)");
-                console.error(param.gameState);
-            }
+            document.getElementById("cell-" + param.gameState.tail[i].x + "-" + param.gameState.tail[i].y).className = "";
         }
-
-        try {
-            document.getElementById("cell-" + param.gameState.berryX + "-" + param.gameState.berryY).className = "";
-        } catch (ex) {
-            console.error("Issue with clearing the game board upon death (berry)");
-            console.error(param.gameState);
-        }
-
+        document.getElementById("cell-" + param.gameState.berryX + "-" + param.gameState.berryY).className = "";
         return;
     } else if (callType === 5) {
         window.restartGame = false;
