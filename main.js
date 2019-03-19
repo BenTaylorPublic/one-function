@@ -28,6 +28,15 @@ async function OneFunction(param) {
         popupDiv.hidden = true;
         body.appendChild(popupDiv);
 
+        var popupDiv = document.createElement("div");
+        popupDiv.id = "highscore";
+        var currentHighScore = localStorage.getItem("highscore");
+        if (currentHighScore == null) {
+            currentHighScore = 0;
+        }
+        popupDiv.innerHTML = "Highscore: " + currentHighScore;
+        body.appendChild(popupDiv);
+
         // Attaching the keydown events to the window
         window.addEventListener("keydown", (event) => {
             OneFunction(event);
@@ -288,8 +297,8 @@ async function OneFunction(param) {
         var currentHighScore = localStorage.getItem("highscore");
         if (currentHighScore == null || param.score > currentHighScore) {
             //New high score
-            //TODO: set in div once its made
             localStorage.setItem("highscore", param.score);
+            document.getElementById("highscore").innerHTML = "Highscore: " + param.score;
             return true;
         }
         return false;
