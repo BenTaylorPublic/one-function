@@ -94,9 +94,10 @@ async function OneFunction(param) {
             await new Promise(resolve => setTimeout(resolve, 30));
         }
 
+        //Popup
         await OneFunction({
             callType: 5,
-            gameState: gameState
+            message: gameState.result
         });
 
         // Remove the body and berry from board
@@ -255,7 +256,6 @@ async function OneFunction(param) {
         return;
     } else if (callType === 4) {
         // Using the game state to remove the body and berry
-
         for (let i = 0; i < param.gameState.tail.length; i++) {
             document.getElementById("cell-" + param.gameState.tail[i].x + "-" + param.gameState.tail[i].y).className = "";
         }
@@ -264,7 +264,7 @@ async function OneFunction(param) {
     } else if (callType === 5) {
         window.restartGame = false;
         var popupDiv = document.getElementById("popup");
-        popupDiv.innerHTML = param.gameState.result + "<br/>(Press any key to restart)";
+        popupDiv.innerHTML = param.message + "<br/>(Press any key to restart)";
         popupDiv.hidden = false;
         await new Promise(resolve => setTimeout(resolve, 300));
         do {
