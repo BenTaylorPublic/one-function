@@ -94,6 +94,16 @@ async function OneFunction(param) {
             await new Promise(resolve => setTimeout(resolve, 30));
         }
 
+        //Storing/checking score
+        var newHighScore = await OneFunction({
+            callType: 6,
+            score: gameState.score
+        });
+
+        if (newHighScore === true) {
+            gameState.result = "New high score: " + gameState.score + "!<br/>" + gameState.result;
+        }
+
         //Popup
         await OneFunction({
             callType: 5,
@@ -274,6 +284,15 @@ async function OneFunction(param) {
 
         popupDiv.hidden = true;
         return;
+    } else if (callType === 6) {
+        var currentHighScore = localStorage.getItem("highscore");
+        if (currentHighScore == null || param.score > currentHighScore) {
+            //New high score
+            //TODO: set in div once its made
+            localStorage.setItem("highscore", param.score);
+            return true;
+        }
+        return false;
     }
 
     throw "You should never get here";
