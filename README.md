@@ -19,3 +19,9 @@ TODO: Somehow incorporate **blockchain** into the recursive function to speed up
 ### How many times did your browser break due to infinite loops?
 
 3
+
+### How maintainable is this coding philosophy when used in large projects
+Very
+
+### Have you heard of optional typing in javascript with Typescript?
+Why ruin the perfect language that allows you to create such beauty and simplicity by attempting to add types to it.
