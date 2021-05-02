@@ -7,13 +7,13 @@
 
 body {
     background-color: #333333;
+    font-family: monospace;
 }
 
 table {
     width: 800px;
     height: 450px;
     border-spacing: 0px;
-    position: absoulute;
     left: 0;
     right: 0;
     margin: auto;
@@ -55,4 +55,19 @@ td {
 #highscore {
     color: white;
     text-align: center;
+}
+
+a {
+    width: 100%;
+    text-align: center;
+    bottom: 10px;
+    text-decoration: underline;
+    position: absolute;
+}
+
+a:visited,
+a:hover,
+a:active,
+a:link {
+    color: white;
 }

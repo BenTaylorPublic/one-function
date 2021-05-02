@@ -7,7 +7,7 @@ async function OneFunction(param) {
         console.info("Generating the board");
         /*
          * When the param is null, it's the initial setup of the game board
-         * After, we start the main game loop 
+         * After, we start the main game loop
          */
         var body = document.getElementsByTagName("body")[0];
         var table = document.createElement("table");
@@ -43,6 +43,13 @@ async function OneFunction(param) {
         });
 
         console.info("Finished generating the board");
+
+        //Adding a link to bentaylor.dev
+        var anchor = document.createElement("a");
+        anchor.href = "http://bentaylor.dev";
+        anchor.innerText = "Back to BenTaylor.dev";
+        body.appendChild(anchor);
+
         OneFunction({
             callType: 0
         });
@@ -247,7 +254,7 @@ async function OneFunction(param) {
 
             param.gameState.berryX = newXLocation;
             param.gameState.berryY = newYLocation;
-            // Redrawing the berry 
+            // Redrawing the berry
             document.getElementById("cell-" + param.gameState.berryX + "-" + param.gameState.berryY).className = "magentaCell";
 
         } else { //Only undraw and remove the tail if no berry was collected
